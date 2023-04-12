@@ -16,12 +16,20 @@ export default {
         user: interaction.user.id,
       });
 
-      const fields = find.map((item) => {
-        return {
-          name: item.code,
-          value: `Status: ${item.active ? "Ativo" : "Entregue"}`,
-        };
-      });
+      let fields = [
+        {
+          name: "Nenhum pacote encontrado",
+          value: "Adicione um pacote utilizando /correios",
+        },
+      ];
+      if (find.length > 0) {
+        fields = find.map((item) => {
+          return {
+            name: item.code,
+            value: `Status: ${item.active ? "Ativo" : "Entregue"}`,
+          };
+        });
+      }
 
       const embed = new EmbedBuilder()
         .setColor("#0099ff")

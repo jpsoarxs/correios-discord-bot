@@ -30,16 +30,27 @@ export default {
     if (props) {
       try {
         if (findStatus) {
+          console.log(
+            `Updating status to ${status} for ${interaction.user.id}`
+          );
           await NotifyModel.updateOne(
             { user: interaction.user.id },
             { status: status }
           );
         } else {
+          console.log(
+            `Creating status to ${status} for ${interaction.user.id}`
+          );
           await NotifyModel.create({
             user: interaction.user.id,
             status: status,
           });
         }
+
+        return await interaction.reply({
+          content: `Notificações ${status ? "ativadas" : "desativadas"}`,
+          ephemeral: true,
+        });
       } catch (error) {
         console.log(error);
       }

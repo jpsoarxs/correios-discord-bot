@@ -48,18 +48,19 @@ export default cron.schedule("*/5 * * * *", async () => {
         const client = bot.client;
         const user = await client.users.fetch(item.user);
 
+        const lastEvent = eventos[eventos.length - 1];
+        if (code.active) {
+          await user.send({
+            embeds: [
+              {
+                title: code.code,
+                description: lastEvent.descricao,
+              },
+            ],
+          });
+        }
+
         if (eventos.length > code.events.length) {
-          const lastEvent = eventos[eventos.length - 1];
-          if (code.active) {
-            await user.send({
-              embeds: [
-                {
-                  title: code.code,
-                  description: lastEvent.descricao,
-                },
-              ],
-            });
-          }
           await CodeModel.updateOne(
             { _id: code._id },
             { active: lastEvent.codigo !== "BDE", events: eventos }
