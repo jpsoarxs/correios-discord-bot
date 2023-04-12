@@ -43,30 +43,27 @@ export default cron.schedule("*/5 * * * *", async () => {
         }
 
         let { eventos } = encomenda[0];
-
         eventos = eventos.reverse();
-        const lastEvent = eventos[eventos.length - 1];
 
         const client = bot.client;
         const user = await client.users.fetch(item.user);
 
-        if (code.active) {
-          await user.send({
-            embeds: [
-              {
-                title: code.code,
-                description: lastEvent.descricao,
-              },
-            ],
-          });
-        }
-
         if (eventos.length > code.events.length) {
-          await CodeModel.updateOne({ _id: code._id }, { events: eventos });
-        }
-
-        if (lastEvent.codigo === "BDE") {
-          await CodeModel.updateOne({ _id: code._id }, { active: false });
+          const lastEvent = eventos[eventos.length - 1];
+          if (code.active) {
+            await user.send({
+              embeds: [
+                {
+                  title: code.code,
+                  description: lastEvent.descricao,
+                },
+              ],
+            });
+          }
+          await CodeModel.updateOne(
+            { _id: code._id },
+            { active: lastEvent.codigo !== "BDE", events: eventos }
+          );
         }
       }
     }
