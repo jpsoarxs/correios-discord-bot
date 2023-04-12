@@ -66,7 +66,7 @@ export default cron.schedule("*/5 * * * *", async () => {
           });
         }
 
-        if (eventos.length > code.events.length) {
+        if (eventos.length > code.events.length || lastEvent.codigo === "BDE") {
           console.log(`updating code ${code.code} for user ${item.user}`);
           await CodeModel.updateOne(
             { _id: code._id },
