@@ -68,7 +68,9 @@ export class Bot {
 
     const commandFiles = await readdirSync(
       join(__dirname, "..", "commands")
-    ).filter((file) => file.endsWith(".ts"));
+    ).filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
+
+    console.log(commandFiles, __dirname);
 
     for (const file of commandFiles) {
       const command = await import(join(__dirname, "..", "commands", file));

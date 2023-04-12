@@ -25,7 +25,7 @@ export default cron.schedule("0 0 */5 * *", async () => {
     }
 
     console.log(`deleted ${count} codes`);
-    console.log("job notify finished");
+    console.log("job clear finished");
   } catch (error) {
     console.log(error);
   }
