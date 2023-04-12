@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:6-jammy
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - "27017:27017"
+    volumes:
+      - dbdata6:/data/db
+    networks:
+      - node-network
+volumes:
+  dbdata6:
+networks:
+  node-network:
+    driver: bridge
