@@ -13,6 +13,7 @@ export default cron.schedule("*/5 * * * *", async () => {
 
   try {
     const findNotify = await NotifyModel.find({ status: true });
+    console.log(`found ${findNotify.length} users with notify enabled`);
 
     if (!findNotify) return;
 
@@ -24,6 +25,8 @@ export default cron.schedule("*/5 * * * *", async () => {
           },
         },
       ]).exec();
+
+      console.log(`found ${codes.length} codes for user ${item.user}`);
 
       if (!codes) return;
 
@@ -50,6 +53,9 @@ export default cron.schedule("*/5 * * * *", async () => {
 
         const lastEvent = eventos[eventos.length - 1];
         if (code.active) {
+          console.log(
+            `sending message to user ${item.user} with code ${code.code}`
+          );
           await user.send({
             embeds: [
               {
@@ -61,6 +67,7 @@ export default cron.schedule("*/5 * * * *", async () => {
         }
 
         if (eventos.length > code.events.length) {
+          console.log(`updating code ${code.code} for user ${item.user}`);
           await CodeModel.updateOne(
             { _id: code._id },
             { active: lastEvent.codigo !== "BDE", events: eventos }
